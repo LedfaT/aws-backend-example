@@ -8,15 +8,15 @@ config();
 
 const app = express();
 app.use(cors());
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
-const pgPool = new Pool({
-  host: process.env.POSTGRES_HOST,
-  port: process.env.POSTGRES_PORT,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB_NAME,
-});
+// const pgPool = new Pool({
+//   host: process.env.POSTGRES_HOST,
+//   port: process.env.POSTGRES_PORT,
+//   user: process.env.POSTGRES_USER,
+//   password: process.env.POSTGRES_PASSWORD,
+//   database: process.env.POSTGRES_DB_NAME,
+// });
 
 // const redis = new Redis({
 //   host: process.env.REDIS_HOST,
@@ -31,14 +31,14 @@ app.get("/health", (req, res) => {
   res.send("OK");
 });
 
-app.get("/db", async (req, res) => {
-  try {
-    const result = await pgPool.query("SELECT NOW()");
-    res.json({ time: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// app.get("/db", async (req, res) => {
+//   try {
+//     const result = await pgPool.query("SELECT NOW()");
+//     res.json({ time: result.rows[0] });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 // app.get("/cache", async (req, res) => {
 //   try {
@@ -50,6 +50,6 @@ app.get("/db", async (req, res) => {
 //   }
 // });
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
 });
