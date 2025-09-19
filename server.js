@@ -22,7 +22,7 @@ const pgPool = new Pool({
 async function checkConnection() {
   try {
     const client = await pgPool.connect();
-    await client.query("SELECT 1"); // простая проверка
+    await client.query("SELECT 1");
     console.log("Connection to DB successful");
     client.release();
   } catch (err) {
@@ -36,6 +36,16 @@ const redis = new Redis({
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
 });
+
+redis
+  .ping()
+  .then((res) => {
+    console.log("Redis response:", res);
+    redis.disconnect();
+  })
+  .catch((err) => {
+    console.error("Redis connection error:", err);
+  });
 
 app.get("/", (req, res) => {
   res.send("Hello from Express on AppRunner 🚀");
