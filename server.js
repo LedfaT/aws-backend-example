@@ -32,10 +32,10 @@ async function checkConnection() {
 
 checkConnection();
 
-// const redis = new Redis({
-//   host: process.env.REDIS_HOST,
-//   port: process.env.REDIS_PORT,
-// });
+const redis = new Redis({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+});
 
 app.get("/", (req, res) => {
   res.send("Hello from Express on AppRunner 🚀");
@@ -54,15 +54,15 @@ app.get("/db", async (req, res) => {
   }
 });
 
-// app.get("/cache", async (req, res) => {
-//   try {
-//     await redis.set("hello", "world", "EX", 60); // TTL 60 сек
-//     const value = await redis.get("hello");
-//     res.json({ hello: value });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
+app.get("/cache", async (req, res) => {
+  try {
+    await redis.set("hello", "world", "EX", 60);
+    const value = await redis.get("hello");
+    res.json({ hello: value });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
